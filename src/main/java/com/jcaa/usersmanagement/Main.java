@@ -15,7 +15,12 @@ public final class Main {
     log.info("Starting Users Management System...");
     final DependencyContainer container = new DependencyContainer();
     try (final Scanner scanner = new Scanner(System.in)) {
-      new UserManagementCli(container.userController(), new ConsoleIO(scanner, System.out)).start();
+      new UserManagementCli(
+              container.userController(),
+              container.muestraController(),
+              new ConsoleIO(scanner, System.out))
+          .start();
+
     }
   }
 }

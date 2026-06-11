@@ -10,7 +10,7 @@ CREATE DATABASE IF NOT EXISTS crud_usuarios
 USE crud_usuarios;
 
 CREATE TABLE IF NOT EXISTS users (
-    id          VARCHAR(36)  NOT NULL PRIMARY KEY,
+                                     id          VARCHAR(36)  NOT NULL PRIMARY KEY,
     name        VARCHAR(100) NOT NULL,
     email       VARCHAR(150) NOT NULL UNIQUE,
     password    VARCHAR(255) NOT NULL,
@@ -18,16 +18,29 @@ CREATE TABLE IF NOT EXISTS users (
     status      ENUM('ACTIVE', 'INACTIVE', 'PENDING', 'BLOCKED') NOT NULL DEFAULT 'PENDING',
     created_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Usuario administrador inicial (password: Admin1234!)
 INSERT INTO users (id, name, email, password, role, status)
 VALUES (
-    '00000000-0000-0000-0000-000000000001',
-    'Administrador',
-    'admin@example.com',
-    '$2a$12$placeholderHashReplaceWithRealBCryptHash',
-    'ADMIN',
-    'ACTIVE'
-);
+           '00000000-0000-0000-0000-000000000001',
+           'Administrador',
+           'admin@example.com',
+           '$2a$12$placeholderHashReplaceWithRealBCryptHash',
+           'ADMIN',
+           'ACTIVE'
+       );
 
+-- =============================================
+-- Gestión de Muestras del laboratorio de control de calidad
+-- =============================================
+
+CREATE TABLE IF NOT EXISTS muestras (
+    id          VARCHAR(36)  NOT NULL PRIMARY KEY,
+    codigo      VARCHAR(20)  NOT NULL UNIQUE,
+    lote_id     VARCHAR(36)  NOT NULL,
+    descripcion VARCHAR(255) NOT NULL,
+    estado      ENUM('DISPONIBLE', 'EN_ANALISIS', 'AGOTADA') NOT NULL DEFAULT 'DISPONIBLE',
+    created_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
