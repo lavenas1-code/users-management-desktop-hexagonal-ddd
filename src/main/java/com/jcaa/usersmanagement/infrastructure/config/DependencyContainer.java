@@ -1,5 +1,6 @@
 package com.jcaa.usersmanagement.infrastructure.config;
 
+
 import com.jcaa.usersmanagement.application.port.in.CreateMuestraUseCase;
 import com.jcaa.usersmanagement.application.port.in.CreateUserUseCase;
 import com.jcaa.usersmanagement.application.port.in.DeleteMuestraUseCase;
@@ -22,6 +23,18 @@ import com.jcaa.usersmanagement.application.service.GetMuestraByIdService;
 import com.jcaa.usersmanagement.application.service.GetUserByIdService;
 import com.jcaa.usersmanagement.application.service.LoginService;
 import com.jcaa.usersmanagement.application.service.UpdateMuestraService;
+import com.jcaa.usersmanagement.application.port.in.CreateUserUseCase;
+import com.jcaa.usersmanagement.application.port.in.DeleteUserUseCase;
+import com.jcaa.usersmanagement.application.port.in.GetAllUsersUseCase;
+import com.jcaa.usersmanagement.application.port.in.GetUserByIdUseCase;
+import com.jcaa.usersmanagement.application.port.in.LoginUseCase;
+import com.jcaa.usersmanagement.application.port.in.UpdateUserUseCase;
+import com.jcaa.usersmanagement.application.service.CreateUserService;
+import com.jcaa.usersmanagement.application.service.DeleteUserService;
+import com.jcaa.usersmanagement.application.service.EmailNotificationService;
+import com.jcaa.usersmanagement.application.service.GetAllUsersService;
+import com.jcaa.usersmanagement.application.service.GetUserByIdService;
+import com.jcaa.usersmanagement.application.service.LoginService;
 import com.jcaa.usersmanagement.application.service.UpdateUserService;
 import com.jcaa.usersmanagement.infrastructure.adapter.email.JavaMailEmailSenderAdapter;
 import com.jcaa.usersmanagement.infrastructure.adapter.email.SmtpConfig;
@@ -30,6 +43,8 @@ import com.jcaa.usersmanagement.infrastructure.adapter.persistence.config.Databa
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.MuestraRepositoryMySQL;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.UserRepositoryMySQL;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.controller.MuestraController;
+
+import com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.UserRepositoryMySQL;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.controller.UserController;
 
 import java.sql.Connection;
@@ -51,6 +66,7 @@ public final class DependencyContainer {
   private static final String SMTP_FROM_NAME = "smtp.from.name";
 
   private final UserController userController;
+
   private final MuestraController muestraController;
 
   public DependencyContainer() {
@@ -58,7 +74,9 @@ public final class DependencyContainer {
 
     final Connection connection = buildDatabaseConnection(properties);
     final UserRepositoryMySQL userRepository = new UserRepositoryMySQL(connection);
+
     final MuestraRepositoryMySQL muestraRepository = new MuestraRepositoryMySQL(connection);
+
 
     final JavaMailEmailSenderAdapter emailSender =
         new JavaMailEmailSenderAdapter(buildSmtpConfig(properties));
@@ -86,6 +104,7 @@ public final class DependencyContainer {
             getAllUsersUseCase,
             loginUseCase);
 
+
     final CreateMuestraUseCase createMuestraUseCase =
         new CreateMuestraService(muestraRepository, muestraRepository, validator);
     final UpdateMuestraUseCase updateMuestraUseCase =
@@ -103,15 +122,18 @@ public final class DependencyContainer {
             deleteMuestraUseCase,
             getMuestraByIdUseCase,
             getAllMuestrasUseCase);
+
   }
 
   public UserController userController() {
     return userController;
   }
 
+
   public MuestraController muestraController() {
     return muestraController;
   }
+
 
   private static Connection buildDatabaseConnection(final AppProperties properties) {
     final DatabaseConfig config =

@@ -33,4 +33,3 @@ public enum MenuOption {
     return Optional.empty();
   }
 }
-

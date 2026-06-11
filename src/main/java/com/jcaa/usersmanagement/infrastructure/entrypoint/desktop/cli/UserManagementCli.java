@@ -27,10 +27,10 @@ import lombok.RequiredArgsConstructor;
 public final class UserManagementCli {
 
   private static final String BANNER =
-      """
-      ==========================================
-           Users Management System
-      ==========================================""";
+          """
+          ==========================================
+               Users Management System
+          ==========================================""";
 
   private static final String MENU_BORDER = "  ==========================================";
 
@@ -64,32 +64,32 @@ public final class UserManagementCli {
   }
 
   private void executeHandler(
-      final Map<MenuOption, OperationHandler> handlers, final MenuOption option) {
+          final Map<MenuOption, OperationHandler> handlers, final MenuOption option) {
     try {
       handlers.get(option).handle();
     } catch (final ConstraintViolationException exception) {
       console.println("  Validation errors:");
       exception.getConstraintViolations()
-          .forEach(violation -> console.println("    - " + violation.getMessage()));
+              .forEach(violation -> console.println("    - " + violation.getMessage()));
     } catch (final RuntimeException exception) {
       console.println("  Unexpected error: " + exception.getMessage());
     }
   }
 
   private Map<MenuOption, OperationHandler> buildHandlers(
-      final UserResponsePrinter printer, final MuestraResponsePrinter muestraPrinter) {
+          final UserResponsePrinter printer, final MuestraResponsePrinter muestraPrinter) {
     return Map.ofEntries(
-        Map.entry(MenuOption.LIST_USERS,  new ListUsersHandler(userController, printer)),
-        Map.entry(MenuOption.FIND_USER,   new FindUserByIdHandler(userController, console, printer)),
-        Map.entry(MenuOption.CREATE_USER, new CreateUserHandler(userController, console, printer)),
-        Map.entry(MenuOption.UPDATE_USER, new UpdateUserHandler(userController, console, printer)),
-        Map.entry(MenuOption.DELETE_USER, new DeleteUserHandler(userController, console)),
-        Map.entry(MenuOption.LOGIN,       new LoginHandler(userController, console, printer)),
-        Map.entry(MenuOption.LIST_MUESTRAS,  new ListMuestrasHandler(muestraController, muestraPrinter)),
-        Map.entry(MenuOption.FIND_MUESTRA,   new FindMuestraByIdHandler(muestraController, console, muestraPrinter)),
-        Map.entry(MenuOption.CREATE_MUESTRA, new CreateMuestraHandler(muestraController, console, muestraPrinter)),
-        Map.entry(MenuOption.UPDATE_MUESTRA, new UpdateMuestraHandler(muestraController, console, muestraPrinter)),
-        Map.entry(MenuOption.DELETE_MUESTRA, new DeleteMuestraHandler(muestraController, console)));
+            Map.entry(MenuOption.LIST_USERS,  new ListUsersHandler(userController, printer)),
+            Map.entry(MenuOption.FIND_USER,   new FindUserByIdHandler(userController, console, printer)),
+            Map.entry(MenuOption.CREATE_USER, new CreateUserHandler(userController, console, printer)),
+            Map.entry(MenuOption.UPDATE_USER, new UpdateUserHandler(userController, console, printer)),
+            Map.entry(MenuOption.DELETE_USER, new DeleteUserHandler(userController, console)),
+            Map.entry(MenuOption.LOGIN,       new LoginHandler(userController, console, printer)),
+            Map.entry(MenuOption.LIST_MUESTRAS,  new ListMuestrasHandler(muestraController, muestraPrinter)),
+            Map.entry(MenuOption.FIND_MUESTRA,   new FindMuestraByIdHandler(muestraController, console, muestraPrinter)),
+            Map.entry(MenuOption.CREATE_MUESTRA, new CreateMuestraHandler(muestraController, console, muestraPrinter)),
+            Map.entry(MenuOption.UPDATE_MUESTRA, new UpdateMuestraHandler(muestraController, console, muestraPrinter)),
+            Map.entry(MenuOption.DELETE_MUESTRA, new DeleteMuestraHandler(muestraController, console)));
   }
 
   private void printMenu() {
